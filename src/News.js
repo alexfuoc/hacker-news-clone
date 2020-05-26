@@ -12,7 +12,7 @@ function StoriesGrid({ stories }) {
                <a href={story.url ? story.url : 'www.google.com'}>{story.title}</a>
                <span> by {story.by} </span>
                <span>at {dateConverter(story.time)} </span>
-               <span>with {story.descendents} comments</span>
+               <span>with {story.descendants} comments</span>
             </li>
          ))}
        </ul>
