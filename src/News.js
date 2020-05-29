@@ -4,6 +4,8 @@ import dateConverter from "./utils/helpers";
 import Loading from './Loading'
 
 function StoriesGrid({ stories }) {
+  stories = stories.length > 50 ? stories.slice(0, 50) : stories;
+
    return (
      <div>
        <ul>

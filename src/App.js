@@ -8,7 +8,7 @@ function App() {
   return (
     <div>
       <h1 className="App">HELLOOOOO</h1>
-      <User id={'longdefeat'}/>
+      <User id={"SiempreViernes"} />
     </div>
   );
 }

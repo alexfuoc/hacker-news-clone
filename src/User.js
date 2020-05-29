@@ -35,7 +35,11 @@ export class User extends Component {
   }
 
   render() {
-    const { user, loading } = this.state;
+    const { user, loading, error } = this.state;
+
+    if (error) {
+      return <p>{error}</p>;
+    }
 
     if (loading) {
       return <Loading text={"Fetching user"} />;

@@ -4,6 +4,12 @@ import Loading from "./Loading";
 import dateConverter from "./utils/helpers";
 
 function PostList({ posts }) {
+   posts = posts.length > 50 ? posts.slice(0,50) : posts
+      //  if (posts !== null) {
+      //    console.log("posts during rendered postlist", posts);
+      //  } 
+
+   
   return (
     <div>
       <ul>
@@ -38,7 +44,7 @@ export class UserPosts extends Component {
   }
 
   loadPosts(postIds) {
-    console.log("Loading Posts...", postIds);
+
     fetchPosts(postIds)
       .then((posts) =>
         this.setState({
