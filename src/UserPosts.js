@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { fetchPosts } from "./utils/api";
 import Loading from "./Loading";
-import dateConverter from "./utils/helpers";
+import { dateConverter } from "./utils/helpers";
+import { Link } from  'react-router-dom';
 
 function PostList({ posts }) {
    posts = posts.length > 50 ? posts.slice(0,50) : posts
@@ -12,13 +13,42 @@ function PostList({ posts }) {
    
   return (
     <div>
-      <ul>
+      <ul className="commentText">
         {posts.map((post) => (
-          <li key={post.id}>
-            <a href={post.url ? post.url : "www.google.com"}>{post.title}</a>
-            <span> by {post.by} </span>
-            <span>at {dateConverter(post.time)} </span>
-            <span>with {post.descendants} comments</span>
+          <li key={post.id} className="shadowing">
+            <a href={post.url ? post.url : "www.google.com"} className='link'>{post.title}</a>
+            <div className="meta-info-light">
+              <span>
+                by{" "}
+                {
+                  <Link
+                    className=""
+                    to={{
+                      pathname: "/user",
+                      search: `?id=${post.by}`,
+                    }}
+                  >
+                    {post.by}
+                  </Link>
+                }{" "}
+              </span>
+              <span>at {dateConverter(post.time)} </span>
+              <span>
+                with{" "}
+                {
+                  <Link
+                    className=""
+                    to={{
+                      pathname: "/post",
+                      search: `?id=${post.id}`,
+                    }}
+                  >
+                    {post.descendants}
+                  </Link>
+                }{" "}
+                comments
+              </span>
+            </div>
           </li>
         ))}
       </ul>

@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import dateConverter from "./utils/helpers";
+import { dateConverter } from "./utils/helpers";
 import { fetchUser } from "./utils/api";
 import Loading from "./Loading";
 import UserPosts from "./UserPosts";
+import queryString from "query-string";
 
 export class User extends Component {
   constructor(props) {
@@ -17,10 +18,9 @@ export class User extends Component {
   }
 
   componentDidMount() {
-    const { id } = this.props;
-
-    console.log("Loading Users...", this.props.id);
-    fetchUser(id)
+    const userId = queryString.parse(this.props.location.search);
+    console.log("Loading Users...", userId.id);
+    fetchUser(userId.id)
       .then((user) =>
         this.setState({
           user: user,

@@ -1,7 +1,8 @@
 import React from 'react'
 import { fetchMainPosts } from './utils/api'
-import dateConverter from "./utils/helpers";
+import { dateConverter } from "./utils/helpers";
 import Loading from './Loading'
+import { Link } from 'react-router-dom'
 
 function StoriesGrid({ stories }) {
   stories = stories.length > 50 ? stories.slice(0, 50) : stories;
@@ -10,12 +11,48 @@ function StoriesGrid({ stories }) {
      <div>
        <ul>
          {stories.map((story) => (
-            <li key={story.id}>
-               <a href={story.url ? story.url : 'www.google.com'}>{story.title}</a>
-               <span> by {story.by} </span>
+           <li key={story.id} className="shadowing">
+             <h2 className="header-sm">
+               <a
+                 className="link"
+                 href={story.url ? story.url : "www.google.com"}
+               >
+                 {story.title}
+               </a>
+             </h2>
+             <div className="meta-info-light">
+               <span>
+                 by{" "}
+                 {
+                   <Link
+                     className=""
+                     to={{
+                       pathname: "/user",
+                       search: `?id=${story.by}`,
+                     }}
+                   >
+                     {story.by}
+                   </Link>
+                 }{" "}
+               </span>
                <span>at {dateConverter(story.time)} </span>
-               <span>with {story.descendants} comments</span>
-            </li>
+               <span>
+                 with{" "}
+                 {
+                   <Link
+                     className=""
+                     to={{
+                       pathname: "/post",
+                       search: `?id=${story.id}`,
+                     }}
+                   >
+                     {story.descendants}
+                   </Link>
+                 }{" "}
+                 comments
+               </span>
+             </div>
+           </li>
          ))}
        </ul>
      </div>
@@ -28,7 +65,7 @@ export default class News extends React.Component {
     super(props);
 
     this.state = {
-      selectedStoryType: "top",
+      stories: null,
       topStories: null,
       newStories: null,
       error: null,
@@ -37,10 +74,10 @@ export default class News extends React.Component {
   }
 
   componentDidMount() {
-    fetchMainPosts(this.state.selectedStoryType)
+    fetchMainPosts(this.props.selectedStoryType)
       .then((posts) =>
         this.setState({
-          topStories: posts,
+          stories: posts,
           loading: false,
         })
       )
@@ -51,8 +88,9 @@ export default class News extends React.Component {
       )
   }
 
+
   render() {
-    const { topStories, loading, error } = this.state;
+    const { stories, loading, error } = this.state;
     if(loading) {
       return <Loading />
     }
@@ -60,11 +98,11 @@ export default class News extends React.Component {
       return <p>ERROR: {error}</p>;
     }
 
-    if (topStories !== null) {
-      console.log(topStories);
+    if (stories !== null) {
+      console.log(stories);
       return (
         <div>
-          <StoriesGrid stories={topStories} />
+          <StoriesGrid stories={stories} />
         </div>
       );
     }
