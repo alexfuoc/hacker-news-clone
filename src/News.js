@@ -68,29 +68,58 @@ export default class News extends React.Component {
       stories: null,
       topStories: null,
       newStories: null,
+      storyType: null,
       error: null,
       loading: true,
     };
+    
+    this.updateStoryType = this.updateStoryType.bind(this);
   }
 
   componentDidMount() {
-    fetchMainPosts(this.props.selectedStoryType)
-      .then((posts) =>
-        this.setState({
-          stories: posts,
-          loading: false,
-        })
-      )
-      .catch(({ message }) =>
-        this.setState({
-          error: message,
-        })
-      )
+    this.updateStoryType(this.props.selectedStoryType)
+  }
+
+
+  updateStoryType(selectedStoryType){
+    if(selectedStoryType === 'top' && this.state.topStories === null){
+      fetchMainPosts(selectedStoryType)
+        .then((posts) =>
+          this.setState({
+            topStories: posts,
+            loading: false,
+          })
+        )
+        .catch(({ message }) =>
+          this.setState({
+            error: message,
+          })
+        );
+    }
+
+    if (selectedStoryType === "new" && this.state.newStories === null) {
+      fetchMainPosts(selectedStoryType)
+        .then((posts) =>
+          this.setState({
+            newStories: posts,
+            loading: false,
+          })
+        )
+        .catch(({ message }) =>
+          this.setState({
+            error: message,
+          })
+        );
+    }
   }
 
 
   render() {
-    const { stories, loading, error } = this.state;
+    const { topStories, newStories, loading, error } = this.state;
+    const { selectedStoryType } = this.props;
+
+    console.log(selectedStoryType)
+
     if(loading) {
       return <Loading />
     }
@@ -98,13 +127,32 @@ export default class News extends React.Component {
       return <p>ERROR: {error}</p>;
     }
 
-    if (stories !== null) {
-      console.log(stories);
-      return (
-        <div>
-          <StoriesGrid stories={stories} />
-        </div>
-      );
+    if(selectedStoryType === 'new'){
+      if (newStories !== null){
+        return (
+          <React.Fragment>
+            <StoriesGrid stories={newStories} />
+          </React.Fragment>
+        );
+      } else {
+        this.updateStoryType(selectedStoryType);
+      }
+    }
+    if (selectedStoryType === "top") {
+      if (topStories !== null) {
+        return (
+          <React.Fragment>
+            <StoriesGrid stories={topStories} />
+          </React.Fragment>
+        );
+      } else {
+        this.updateStoryType(selectedStoryType);
+        return (
+          <React.Fragment>
+            <Loading />
+          </React.Fragment>
+        )
+      }
     }
 
     return (
