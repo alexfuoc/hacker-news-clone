@@ -1,5 +1,6 @@
 html,
-body {
+body,
+#root {
   margin: 0;
   height: 100%;
   width: 100%;
@@ -31,12 +32,24 @@ body {
   margin: 0 auto;
 }
 
-.container-light {
-  color: black;
+.dark {
+   color: #DADADA;
+   background-color: #1c2020;
+   min-height: 100%;
 }
 
-.container-dark {
-  color: white;
+.light {
+  background-color:  rgba(0, 0, 0, 0.1);
+  color: #1c2020;
+  min-height: 100%;
+}
+
+.bg-light {
+   background-color: rgba(0, 0, 0, 0.1);
+}
+
+.bg-dark {
+   background-color:rgb(36, 40, 42);
 }
 
 ul {
@@ -74,7 +87,7 @@ li {
 }
 
 .link {
-  color: rgb(187, 46, 31);
+  color: rgb(51, 214, 141);
   text-decoration: none;
   font-weight: bold;
 }
@@ -93,14 +106,6 @@ li {
 
 .comment-bg {
   background-color: rgba(128, 128, 128, 0.5);
-}
-
-.bg-light {
-  background-color: white;
-}
-
-.bg-dark {
-  background-color: black;
 }
 
 .commentList {

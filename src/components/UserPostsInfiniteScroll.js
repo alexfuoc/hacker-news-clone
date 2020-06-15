@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { fetchPosts } from "./utils/api";
+import { fetchPosts } from "../utils/api";
 import Loading from "./Loading";
-import dateConverter from "./utils/helpers";
+import dateConverter from "../utils/helpers";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 function PostList({ posts }) {

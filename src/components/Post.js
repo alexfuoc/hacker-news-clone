@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { fetchItem, fetchComments } from "./utils/api";
+import { fetchItem, fetchComments } from "../utils/api";
 import Loading from "./Loading";
-import { createMarkup }  from "./utils/helpers";
+import { createMarkup }  from "../utils/helpers";
 import queryString from 'query-string'
 import MetaInfo from "./MetaInfo";
 

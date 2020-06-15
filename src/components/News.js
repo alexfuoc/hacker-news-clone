@@ -1,5 +1,5 @@
 import React from "react";
-import { fetchMainPosts } from "./utils/api";
+import { fetchMainPosts } from "../utils/api";
 import Loading from "./Loading";
 import MetaInfo from './MetaInfo';
 

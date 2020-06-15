@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { dateConverter } from "./utils/helpers";
-import { fetchUser, fetchPosts } from "./utils/api";
+import { dateConverter } from "../utils/helpers";
+import { fetchUser, fetchPosts } from "../utils/api";
 import Loading from "./Loading";
 import MetaInfo from './MetaInfo';
 import queryString from "query-string";
@@ -138,7 +138,7 @@ export default class User extends Component {
           has <b>{user.karma}</b> karma
         </span>
         <h2>Posts</h2>
-        {user.submitted > 0 ? <p>No Posts Yet</p> : <UserPosts userPosts={user.submitted} />}
+        {user.submitted >= 0 ? <p>No Posts Yet</p> : <UserPosts userPosts={user.submitted} />}
       </React.Fragment>
     );
   }
