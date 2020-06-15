@@ -1,11 +1,94 @@
 import React, { Component } from "react";
 import { dateConverter } from "./utils/helpers";
-import { fetchUser } from "./utils/api";
+import { fetchUser, fetchPosts } from "./utils/api";
 import Loading from "./Loading";
-import UserPosts from "./UserPosts";
+import MetaInfo from './MetaInfo';
 import queryString from "query-string";
 
-export class User extends Component {
+function PostList({ posts }) {
+  posts = posts.length > 50 ? posts.slice(0, 50) : posts;
+  //  if (posts !== null) {
+  //    console.log("posts during rendered postlist", posts);
+  //  }
+
+  return (
+    <div>
+      <ul className="commentText">
+        {posts.map((post) => (
+          <li key={post.id} className="shadowing">
+            <a
+              href={post.url ? post.url : `/post?id=${post.id}`}
+              className="link"
+            >
+              {post.title}
+            </a>
+            <div className="meta-info-light">
+              <MetaInfo
+                user={post.by}
+                time={post.time}
+                id={post.id}
+                comments={post.descendants}
+              />
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export class UserPosts extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loadingPosts: true,
+      posts: null,
+      error: null,
+    };
+
+    this.loadPosts = this.loadPosts.bind(this);
+  }
+
+  componentDidMount() {
+    this.loadPosts(this.props.userPosts);
+  }
+
+  loadPosts(postIds) {
+    fetchPosts(postIds)
+      .then((posts) =>
+        this.setState({
+          posts,
+          loadingPosts: false,
+        })
+      )
+      .catch(({ message }) =>
+        this.setState({
+          error: message,
+        })
+      );
+  }
+
+  render() {
+    const { posts, error, loadingPosts } = this.state;
+
+    if (error) {
+      return <p>{error}</p>;
+    }
+
+    if (loadingPosts) {
+      return <Loading text={"Loading posts"} />;
+    }
+
+    return (
+      <React.Fragment>
+        <PostList posts={posts} />
+      </React.Fragment>
+    );
+  }
+}
+
+export default class User extends Component {
   constructor(props) {
     super(props);
 
@@ -55,10 +138,8 @@ export class User extends Component {
           has <b>{user.karma}</b> karma
         </span>
         <h2>Posts</h2>
-        <UserPosts userPosts={user.submitted} />
+        {user.submitted > 0 ? <p>No Posts Yet</p> : <UserPosts userPosts={user.submitted} />}
       </React.Fragment>
     );
   }
 }
-
-export default User;

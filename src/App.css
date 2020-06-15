@@ -31,6 +31,14 @@ body {
   margin: 0 auto;
 }
 
+.container-light {
+  color: black;
+}
+
+.container-dark {
+  color: white;
+}
+
 ul {
   padding: 0;
 }
@@ -54,7 +62,6 @@ li {
   font-size: 35px;
   font-weight: bold;
   text-decoration: none;
-  
   margin-bottom: 5px;
 }
 
@@ -82,8 +89,20 @@ li {
   border: 1px solid rgba(136, 152, 159, 0.32);
   border-radius: 5px;
   box-shadow: 2px 2px 5px rgba(136, 152, 159, 0.52);
-  background-color: rgba(128, 128, 128, 0.1411764705882353);
 }
+
+.comment-bg {
+  background-color: rgba(128, 128, 128, 0.5);
+}
+
+.bg-light {
+  background-color: white;
+}
+
+.bg-dark {
+  background-color: black;
+}
+
 .commentList {
   list-style-type: none;
   margin-top: 5px;
@@ -101,6 +120,15 @@ li {
 
 .meta-info-light a {
     color: black;
+}
+
+.meta-info-dark {
+  color: rgb(167, 167, 167);
+  margin-top: 5px;
+}
+
+.meta-info-dark a {
+    color: white;
 }
 
 .row {

@@ -1,13 +1,83 @@
 import React, { Component } from "react";
-import { fetchItem } from "./utils/api";
+import { fetchItem, fetchComments } from "./utils/api";
 import Loading from "./Loading";
-import { dateConverter, createMarkup }  from "./utils/helpers";
-import Comments from './Comments';
+import { createMarkup }  from "./utils/helpers";
 import queryString from 'query-string'
-import { Link } from 'react-router-dom'
+import MetaInfo from "./MetaInfo";
 
 
-export class Post extends Component {
+function CommentList({ comments }) {
+  comments = comments.length > 50 ? comments.slice(0, 50) : comments;
+  if (comments == null) {
+    console.log("comments during rendered postlist", comments);
+  }
+
+  return (
+    <div>
+      <div className="commentText">
+        {comments.map((comment) => (
+          <div key={comment.id} className="shadowing comment-bg">
+            <div className="meta-info-light">
+              <MetaInfo user={comment.by} time={comment.time} />
+            </div>
+            <div
+              className="commentText"
+              dangerouslySetInnerHTML={createMarkup(comment.text)}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export class Comments extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      comments: null,
+      loading: true,
+      error: null,
+    };
+  }
+
+  componentDidMount() {
+    const { commentIds } = this.props;
+
+    fetchComments(commentIds)
+      .then((comments) =>
+        this.setState({
+          comments,
+          loading: false,
+        })
+      )
+      .catch(({ message }) =>
+        this.setState({
+          error: message,
+        })
+      );
+  }
+
+  render() {
+    const { comments, error, loading } = this.state;
+
+    if (error) {
+      return <p>{error}</p>;
+    }
+
+    if (loading) {
+      return <Loading text={"Fetching Comments"} />;
+    }
+
+    return (
+      <div>
+        <CommentList comments={comments} />
+      </div>
+    );
+  }
+}
+
+export default class Post extends Component {
   constructor(props) {
     super(props);
 
@@ -20,8 +90,6 @@ export class Post extends Component {
 
   componentDidMount() {
     const storyId  = queryString.parse(this.props.location.search);
-
-    console.log("Loading Story...", storyId.id);
 
     fetchItem(storyId.id)
       .then((story) =>
@@ -54,46 +122,24 @@ export class Post extends Component {
       <React.Fragment>
         <div>
           <h1 className="header-lg link">
-            <a className="link" href={story.url ? story.url : "www.google.com"}>
+            <a
+              className="link"
+              href={story.url ? story.url : `/post?id=${story.id}`}
+            >
               {story.title}
             </a>
           </h1>
-         {story.text ? 
-            (<div
-              className="commentText"
-              dangerouslySetInnerHTML={createMarkup(story.text)}/> )   : ""}
-          <div className="meta-info-light ">
-            <span>
-              by{" "}
-              {
-                <Link
-                  className=""
-                  to={{
-                    pathname: "/user",
-                    search: `?id=${story.by}`,
-                  }}
-                >
-                  {story.by}
-                </Link>
-              }{" "}
-            </span>
-            <span>at {dateConverter(story.time)} </span>
-            <span>
-              with{" "}
-              {
-                <Link
-                  className=""
-                  to={{
-                    pathname: "/post",
-                    search: `?id=${story.id}`,
-                  }}
-                >
-                  {story.descendants}
-                </Link>
-              }{" "}
-              comments
-            </span>
+          <div className="meta-info-light">
+            <MetaInfo user={story.by} time={story.time} id={story.id} comments={story.descendants} />
           </div>
+          {story.text ? (
+            <div
+              className="commentText"
+              dangerouslySetInnerHTML={createMarkup(story.text)}
+            />
+          ) : (
+            ""
+          )}
         </div>
         {story.descendants === 0 ? (
           <p>No comments</p>
@@ -104,5 +150,3 @@ export class Post extends Component {
     );
   }
 }
-
-export default Post;

@@ -1,8 +1,7 @@
 import React from "react";
 import { fetchMainPosts } from "./utils/api";
-import { dateConverter } from "./utils/helpers";
 import Loading from "./Loading";
-import { Link } from "react-router-dom";
+import MetaInfo from './MetaInfo';
 
 function StoriesGrid({ stories }) {
   stories = stories.length > 50 ? stories.slice(0, 50) : stories;
@@ -15,43 +14,14 @@ function StoriesGrid({ stories }) {
             <h2 className="header-sm">
               <a
                 className="link"
-                href={story.url ? story.url : "www.google.com"}
+                href={story.url ? story.url : `/post?id=${story.id}`}
               >
                 {story.title}
               </a>
             </h2>
             <div className="meta-info-light">
-              <span>
-                by{" "}
-                {
-                  <Link
-                    className=""
-                    to={{
-                      pathname: "/user",
-                      search: `?id=${story.by}`,
-                    }}
-                  >
-                    {story.by}
-                  </Link>
-                }{" "}
-              </span>
-              <span>at {dateConverter(story.time)} </span>
-              <span>
-                with{" "}
-                {
-                  <Link
-                    className=""
-                    to={{
-                      pathname: "/post",
-                      search: `?id=${story.id}`,
-                    }}
-                  >
-                    {story.descendants}
-                  </Link>
-                }{" "}
-                comments
-              </span>
-            </div>
+              <MetaInfo user={story.by} time={story.time} id={story.id} comments={story.descendants} />
+          </div>
           </li>
         ))}
       </ul>
