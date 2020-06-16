@@ -121,6 +121,7 @@ li {
 .meta-info-light {
   color: grey;
   margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 .meta-info-light a {
@@ -130,6 +131,7 @@ li {
 .meta-info-dark {
   color: rgb(167, 167, 167);
   margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 .meta-info-dark a {

@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { dateConverter } from "../utils/helpers";
+import { dateConverter, createMarkup } from "../utils/helpers";
 import { fetchUser, fetchPosts } from "../utils/api";
 import Loading from "./Loading";
-import MetaInfo from './MetaInfo';
+import MetaInfo from "./MetaInfo";
 import queryString from "query-string";
+import { ThemeConsumer } from "../contexts/theme";
 
 function PostList({ posts }) {
   posts = posts.length > 50 ? posts.slice(0, 50) : posts;
@@ -129,17 +130,32 @@ export default class User extends Component {
     }
 
     return (
-      <React.Fragment>
-        <h1>{user.id}</h1>
-        <span>
-          joined <b>{dateConverter(user.created)}</b>{" "}
-        </span>
-        <span>
-          has <b>{user.karma}</b> karma
-        </span>
-        <h2>Posts</h2>
-        {user.submitted >= 0 ? <p>No Posts Yet</p> : <UserPosts userPosts={user.submitted} />}
-      </React.Fragment>
+      <ThemeConsumer>
+        {({ theme }) => (
+          <React.Fragment>
+            <h1 className="header-lg">{user.id}</h1>
+            <div className={`meta-info-${theme}`}>
+              <span>
+                joined <b>{dateConverter(user.created)}</b>{" "}
+              </span>
+              <span>
+                has <b>{user.karma}</b> karma
+              </span>
+            </div>
+            {user.about ? (
+              <div dangerouslySetInnerHTML={createMarkup(user.about)} />
+            ) : (
+              ""
+            )}
+            <h2>Posts</h2>
+            {user.submitted >= 0 ? (
+              <p>No Posts Yet</p>
+            ) : (
+              <UserPosts userPosts={user.submitted} />
+            )}
+          </React.Fragment>
+        )}
+      </ThemeConsumer>
     );
   }
 }
