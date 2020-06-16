@@ -8,4 +8,4 @@ This is a soft hacker news clone. Built using react, with create-react-app. It i
 
 Light Mode          |  Dark Mode
 :-------------------------:|:-------------------------:
-![](src/example-pics/HN-user-light.JPG) ![](src/example-pics/HN-news-light.JPG) ![](src/example-pics/HN-post-dark.JPG) |  ![](src/example-pics/HN-news-dark.JPG) ![](src/example-pics/HN-post-dark.JPG) ![](src/example-pics/HN-user-dark.JPG)
+![](src/example-pics/HN-news-light.JPG) ![](src/example-pics/HN-user-light.JPG) ![](src/example-pics/HN-post-light.JPG) |  ![](src/example-pics/HN-news-dark.JPG) ![](src/example-pics/HN-user-dark.JPG) ![](src/example-pics/HN-post-dark.JPG)
